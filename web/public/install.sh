@@ -85,18 +85,27 @@ if [ "$platform_os" = "macos" ] && [ "$platform_arch" != "arm64" ]; then
   exit 1
 fi
 
-asset="ctx_${platform_os}-${platform_arch}.tar.gz"
 base_url="https://github.com/${repo}/releases"
 
+# Release assets are version-named (ctx_<ver>_<os>-<arch>.tar.gz), so resolve a
+# concrete tag even for "latest" before building the download URLs. The
+# /releases/latest URL redirects to /releases/tag/<tag>.
 if [ "$version" = "latest" ]; then
-  release_url="${base_url}/latest/download"
+  version="$(curl -fsSLI -o /dev/null -w '%{url_effective}' "${base_url}/latest" | sed 's#.*/tag/##')"
+  if [ -z "$version" ]; then
+    echo "install.sh: could not resolve the latest release tag" >&2
+    exit 1
+  fi
 else
   case "$version" in
     v*) ;;
     *) version="v${version}" ;;
   esac
-  release_url="${base_url}/download/${version}"
 fi
+
+asset="ctx_${version}_${platform_os}-${platform_arch}.tar.gz"
+checksums="ctx_${version}_checksums.txt"
+release_url="${base_url}/download/${version}"
 
 tmp_dir="$(mktemp -d)"
 cleanup() {
@@ -105,26 +114,36 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 archive_path="${tmp_dir}/${asset}"
-checksums_path="${tmp_dir}/ctx_checksums.txt"
+checksums_path="${tmp_dir}/${checksums}"
 
 curl_flags="-fL --retry 3 --retry-delay 1"
 
 echo "Downloading ${asset} from ${release_url}" >&2
 curl $curl_flags -o "$archive_path" "${release_url}/${asset}"
-curl $curl_flags -o "$checksums_path" "${release_url}/ctx_checksums.txt"
+curl $curl_flags -o "$checksums_path" "${release_url}/${checksums}"
 
-checksum_line="$(grep "  ${asset}\$" "$checksums_path" || true)"
-if [ -z "$checksum_line" ]; then
+# Checksum lines look like "<sha256>  dist/ctx_<ver>_<os>-<arch>.tar.gz". Match by
+# asset basename and compare hashes directly — the recorded path prefix differs
+# from where we downloaded to, so `sha256sum -c` on the raw line wouldn't work.
+expected="$(awk -v a="$asset" 'index($2, a) { print $1; exit }' "$checksums_path")"
+if [ -z "$expected" ]; then
   echo "install.sh: checksum for ${asset} not found" >&2
   exit 1
 fi
 
 if command -v sha256sum >/dev/null 2>&1; then
-  (cd "$tmp_dir" && printf '%s\n' "$checksum_line" | sha256sum -c -)
+  actual="$(sha256sum "$archive_path" | awk '{print $1}')"
 elif command -v shasum >/dev/null 2>&1; then
-  (cd "$tmp_dir" && printf '%s\n' "$checksum_line" | shasum -a 256 -c -)
+  actual="$(shasum -a 256 "$archive_path" | awk '{print $1}')"
 else
   echo "install.sh: sha256sum or shasum is required for checksum verification" >&2
+  exit 1
+fi
+
+if [ "$actual" != "$expected" ]; then
+  echo "install.sh: checksum mismatch for ${asset}" >&2
+  echo "  expected ${expected}" >&2
+  echo "  actual   ${actual}" >&2
   exit 1
 fi
 
@@ -134,7 +153,7 @@ mkdir -p "$install_dir"
 cp "${tmp_dir}/ctx_${platform_os}-${platform_arch}/ctx" "${install_dir}/ctx"
 chmod 755 "${install_dir}/ctx"
 
-echo "ctx installed to ${install_dir}/ctx"
+echo "ctx ${version} installed to ${install_dir}/ctx"
 case ":$PATH:" in
   *":$install_dir:"*) ;;
   *) echo "Add ${install_dir} to PATH if ctx is not found." >&2 ;;
