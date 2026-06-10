@@ -1,0 +1,87 @@
+.footer {
+  margin-top: clamp(48px, 10vh, 120px);
+  border-top: 1px solid var(--border-soft);
+}
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 40px;
+  padding-block: 48px 36px;
+}
+
+.brandCol {
+  max-width: 30ch;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.08rem;
+  letter-spacing: -0.02em;
+}
+.mark {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: linear-gradient(160deg, #8af3bd, var(--accent));
+  box-shadow: 0 0 14px rgba(91, 228, 155, 0.5);
+}
+.tag {
+  margin: 16px 0 0;
+  color: var(--text-3);
+  font-size: var(--t-sm);
+  line-height: 1.6;
+}
+
+.cols {
+  display: flex;
+  gap: 64px;
+  flex-wrap: wrap;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.colTitle {
+  color: var(--text-3);
+  font-size: var(--t-cap);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.link {
+  color: var(--text-2);
+  text-decoration: none;
+  font-size: var(--t-sm);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.link:hover {
+  color: var(--text);
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 20px 32px;
+  border-top: 1px solid var(--border-soft);
+  /* small + low-contrast was near the legibility floor — lift it (4.7) */
+  color: var(--text-2);
+  font-size: var(--t-sm);
+}
+.mono {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(91, 228, 155, 0.6);
+}

@@ -1,0 +1,25 @@
+.strip {
+  border-block: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.012);
+}
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  padding-block: 18px;
+  color: var(--text-3);
+  font-size: 0.85rem;
+}
+.item b {
+  color: var(--text);
+  font-weight: 700;
+}
+.sep {
+  opacity: 0.5;
+}
+@media (max-width: 680px) {
+  .sep {
+    display: none;
+  }
+}

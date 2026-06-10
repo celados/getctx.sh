@@ -1,0 +1,57 @@
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  max-width: 100%;
+  padding: 13px 13px 13px 17px;
+  border-radius: 11px;
+  font-family: var(--mono);
+  font-size: var(--t-mono);
+  color: var(--text);
+  box-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.9);
+}
+.dollar {
+  color: var(--accent);
+}
+.code {
+  color: var(--text);
+  /* min-width:0 lets the long curl command scroll inside the pill instead of
+     forcing the pill (and its grid column) wider than a phone viewport */
+  min-width: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+.code::-webkit-scrollbar {
+  display: none;
+}
+
+.copy {
+  margin-left: 5px;
+  padding: 5px 11px;
+  border: none;
+  border-radius: 7px;
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-family: var(--mono);
+  font-size: var(--t-cap);
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+.copy:hover {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* the single accent-filled action on the page (cta-band) */
+.copyEmphasis {
+  padding: 6px 12px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.copyEmphasis:hover {
+  filter: brightness(1.08);
+}

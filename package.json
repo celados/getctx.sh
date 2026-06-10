@@ -1,0 +1,56 @@
+{
+  "name": "getctx.sh",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wireit",
+    "web:dev": "wireit",
+    "web:build": "vite build -c web/vite.config.ts",
+    "web:typecheck": "tsgo -p web/tsconfig.json --noEmit",
+    "web:test": "vitest run -c web/vite.config.ts",
+    "fmt": "oxfmt web/src"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.5.0",
+    "@fontsource-variable/hanken-grotesk": "^5.2.8",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@tanstack/react-router": "^1.170.11",
+    "@tanstack/react-start": "^1.168.20",
+    "clsx": "^2.1.1",
+    "marked": "^18.0.5",
+    "motion": "^12.40.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "1.40.0",
+    "@tanstack/devtools-vite": "^0.7.0",
+    "@tanstack/react-devtools": "^0.10.5",
+    "@tanstack/react-router-devtools": "^1.167.0",
+    "@tanstack/router-plugin": "^1.168.14",
+    "@types/bun": "^1.3.14",
+    "@types/node": "^25",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@typescript/native-preview": "7.0.0-dev.20260527.2",
+    "@vitejs/plugin-react": "^6.0.2",
+    "oxfmt": "^0.53.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16",
+    "vitest": "^4.1.8",
+    "wireit": "^0.14.12",
+    "wrangler": "4.98.0"
+  },
+  "wireit": {
+    "dev": {
+      "dependencies": [{
+        "script": "web:dev",
+        "cascade": false
+      }]
+    },
+    "web:dev": {
+      "command": "vite dev -c web/vite.config.ts --port 4100 --strictPort --host localhost",
+      "service": true
+    }
+  }
+}

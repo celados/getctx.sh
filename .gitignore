@@ -1,0 +1,35 @@
+node_modules
+.scratch
+.agents
+
+# local-only working material — not published to the repo
+docs/
+designs/
+
+# build output
+dist
+.output
+.nitro
+.tanstack
+.tsbuild
+web/.tsbuild
+
+# tanstack router codegen (regenerated on dev/build)
+web/src/routeTree.gen.ts
+
+# env & local
+.env
+.env.*
+!.env.example
+*.local
+
+# editor / os
+.DS_Store
+.vscode
+.idea
+
+# agent-local (machine-specific skill symlinks → ../.agents)
+.claude
+
+# cloudflare
+.wrangler

@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "jsx": "react-jsx",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "target": "ESNext",
+    "types": ["vite/client", "@types/bun"],
+    "paths": { "@/*": ["./src/*"] },
+    "noEmit": true,
+    "outDir": "./.tsbuild"
+  },
+  "include": ["src", "vite.config.ts", "routeTree.gen.ts"]
+}

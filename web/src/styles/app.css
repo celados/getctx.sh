@@ -1,0 +1,204 @@
+/* getctx — Direction A (refined dark "precision infrastructure"). */
+@import "@fontsource-variable/hanken-grotesk";
+@import "@fontsource-variable/jetbrains-mono";
+
+:root {
+  /* surfaces */
+  --bg: #08080a;
+  --surface: #101013;
+  --surface-2: #17171b;
+  --border-soft: rgba(255, 255, 255, 0.06);
+
+  /* text */
+  --text: #f3f3f4;
+  --text-2: #a4a4ac;
+  --text-3: #6c6c75;
+
+  /* single accent (fresh / live / go) */
+  --accent: #5be49b;
+  --accent-ink: #07120c;
+
+  --sans: "Hanken Grotesk Variable", -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* layout */
+  --maxw: 1160px;
+  --pad: clamp(20px, 5vw, 36px);
+
+  /* type scale */
+  --t-display: clamp(3rem, 6.6vw, 5.1rem);
+  --t-h2: clamp(1.9rem, 3.6vw, 2.85rem);
+  --t-h3: 1.15rem;
+  --t-body: 1.05rem;
+  --t-sm: 0.9rem;
+  --t-mono: 0.84rem;
+  --t-cap: 0.76rem;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 0.15s;
+  --dur: 0.2s;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: var(--t-body);
+  line-height: 1.5;
+  position: relative;
+  overflow-x: hidden;
+}
+/* ambient brand light from the top */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: radial-gradient(
+    72% 46% at 50% -8%,
+    rgba(91, 228, 155, 0.08),
+    transparent 62%
+  );
+}
+/* faint engineered grid, fading out downward */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(120% 70% at 50% 0%, #000 22%, transparent 70%);
+  mask-image: radial-gradient(120% 70% at 50% 0%, #000 22%, transparent 70%);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+a {
+  color: inherit;
+}
+
+code,
+pre {
+  font-family: var(--mono);
+}
+
+/* shared layout container */
+.container {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+/* lit-edge surface: gradient hairline border (top edge catches light).
+   Reads `--surface`; set it locally to change the fill. */
+.lit {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.17),
+        rgba(255, 255, 255, 0.05) 38%,
+        rgba(255, 255, 255, 0.03)
+      )
+      border-box;
+}
+
+/* terminal token colors for proof/code blocks (restrained, single accent + 2 status) */
+.t-ok {
+  color: var(--accent);
+}
+.t-cmd {
+  color: var(--text);
+  font-weight: 500;
+}
+.t-h {
+  color: var(--text);
+  font-weight: 500;
+}
+.t-kw {
+  color: #b7a6ff;
+}
+.t-str {
+  color: var(--accent);
+}
+.t-dim {
+  color: var(--text-3);
+}
+.t-warn {
+  color: #e3b341;
+}
+.t-err {
+  color: #f0626b;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+.app-main {
+  flex: 1;
+}
+
+:where(a, button, input, textarea, [tabindex]):focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(91, 228, 155, 0.5);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 8px rgba(91, 228, 155, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

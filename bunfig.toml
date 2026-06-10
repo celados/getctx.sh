@@ -1,0 +1,4 @@
+[install]
+# Supply-chain incidents are usually detected within days; avoid resolving npm
+# versions published in the last 3 days unless explicitly pinned. (mirrors pica)
+minimumReleaseAge = 259200

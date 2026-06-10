@@ -1,0 +1,15 @@
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 760px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* subtle green glow on the "with ctx" card via drop-shadow (no box-shadow clash) */
+.good {
+  filter: drop-shadow(0 0 26px rgba(91, 228, 155, 0.12));
+}

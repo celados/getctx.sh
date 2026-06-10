@@ -1,0 +1,41 @@
+.summary {
+  color: var(--accent);
+}
+.head {
+  color: var(--text);
+  font-weight: 600;
+}
+.subhead {
+  color: var(--text);
+  margin-top: 0.5em;
+}
+.lib {
+  color: var(--text);
+}
+.bullet {
+  color: var(--text-2);
+}
+.comment {
+  color: var(--text-3);
+}
+.dim {
+  color: var(--text-3);
+}
+.meta {
+  color: var(--text-3);
+}
+
+.flash {
+  animation: flashLine 0.95s ease-in-out;
+  border-radius: 3px;
+}
+@keyframes flashLine {
+  0%,
+  100% {
+    background: transparent;
+  }
+  35% {
+    background: rgba(91, 228, 155, 0.16);
+    box-shadow: 0 0 0 1px rgba(91, 228, 155, 0.25);
+  }
+}

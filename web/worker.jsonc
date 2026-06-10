@@ -1,0 +1,21 @@
+{
+  // Cloudflare Worker config for the getctx.sh site (TanStack Start SSR).
+  // Read by @cloudflare/vite-plugin at build (configPath in vite.config.ts).
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "getctx-sh",
+  // latest per CF Workers best-practices guide: "set to today's date"
+  "compatibility_date": "2026-06-10",
+  // required: React 19 SSR streaming + TanStack use node built-ins (AsyncLocalStorage)
+  "compatibility_flags": ["nodejs_compat"],
+  // getctx.sh lives on this account (same one that owns the zone) — see deploy notes
+  "account_id": "929e895c7aaff5f545db857d25dffda2",
+  "main": "@tanstack/react-start/server-entry",
+  // The getctx.sh custom domain is bound once and managed out-of-band (it's a
+  // persistent account-level resource). Per CF docs, dropping `routes` +
+  // `workers_dev:false` makes `wrangler deploy` ship code without touching
+  // routing — so CI needs only Workers Scripts:Edit, not Zone Workers Routes.
+  // To bind the domain on a fresh worker, temporarily add:
+  //   "routes": [{ "pattern": "getctx.sh", "custom_domain": true }]
+  "workers_dev": false,
+  "observability": { "enabled": true }
+}

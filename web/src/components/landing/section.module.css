@@ -1,0 +1,19 @@
+.section {
+  padding-block: clamp(56px, 11vh, 128px);
+}
+.head {
+  max-width: 62ch;
+  margin-bottom: clamp(32px, 5vh, 56px);
+}
+.title {
+  font-size: var(--t-h2);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+.intro {
+  margin-top: 18px;
+  color: var(--text-2);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}

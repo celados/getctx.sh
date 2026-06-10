@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "files": [],
+  "references": [{ "path": "./web" }],
+  "compilerOptions": {
+    "module": "preserve",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "moduleResolution": "bundler",
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "strict": true
+  }
+}

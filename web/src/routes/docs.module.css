@@ -1,0 +1,116 @@
+.prose {
+  --surface: var(--surface);
+  border-radius: 14px;
+  padding: clamp(20px, 4vw, 40px);
+  max-width: 76ch;
+  margin-inline: auto;
+  color: var(--text-2);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.prose :where(h1, h2, h3, h4) {
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.prose h1 {
+  font-size: 1.9rem;
+  margin: 0 0 0.6em;
+}
+.prose h2 {
+  font-size: 1.4rem;
+  margin: 1.8em 0 0.5em;
+  padding-top: 1.2em;
+  border-top: 1px solid var(--border-soft);
+}
+.prose h3 {
+  font-size: 1.12rem;
+  margin: 1.4em 0 0.4em;
+}
+.prose p {
+  margin: 0.85em 0;
+}
+.prose a {
+  color: var(--accent);
+  text-underline-offset: 3px;
+  text-decoration: underline;
+  text-decoration-color: rgba(91, 228, 155, 0.4);
+}
+.prose a:hover {
+  text-decoration-color: var(--accent);
+}
+.prose :where(ul, ol) {
+  margin: 0.85em 0;
+  padding-left: 1.4em;
+}
+.prose li {
+  margin: 0.35em 0;
+}
+.prose li::marker {
+  color: var(--text-3);
+}
+.prose strong {
+  color: var(--text);
+  font-weight: 650;
+}
+
+/* inline code */
+.prose :not(pre) > code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  color: var(--accent);
+  background: var(--surface-2);
+  padding: 0.12em 0.4em;
+  border-radius: 5px;
+}
+
+/* code blocks */
+.prose pre {
+  background: var(--bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 1.1em 0;
+}
+.prose pre code {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.prose blockquote {
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 2px solid var(--border-soft);
+  color: var(--text-3);
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border-soft);
+  margin: 2em 0;
+}
+
+.prose :where(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.1em 0;
+  font-size: 0.9rem;
+}
+.prose :where(th, td) {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.prose th {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+}
