@@ -1,3 +1,4 @@
+import { ScrollArea } from "@base-ui/react/scroll-area"
 import { AnimatePresence, motion } from "motion/react"
 import { useEffect, useRef, useState } from "react"
 import { Link } from "@tanstack/react-router"
@@ -168,102 +169,109 @@ export function TerminalPlayer({
           <span className={styles.state}>{busy ? "running · click to skip" : "ready"}</span>
         </div>
 
-        <div
-          className={cn(styles.body, compact && styles.compact)}
-          ref={bodyRef}
-          onScroll={onScroll}
-          aria-live="polite"
-        >
-          {entries.length === 0 && !typing ? (
-            <div className={styles.hint}>
-              {showChips
-                ? "# pick an intent above — watch the agent run the ctx workflow\n# search → docs → read, with real output"
-                : "# watch an agent run the ctx workflow"}
-            </div>
-          ) : null}
-
-          {entries.map((e) =>
-            e.kind === "comment" ? (
-              <div key={e.id} className={styles.comment}>
-                {e.text}
+        {/* Base UI ScrollArea: native scroller (Viewport) with a custom, fade-in overlay scrollbar.
+            bodyRef/onScroll/aria-live live on the Viewport — it's the element that actually scrolls. */}
+        <ScrollArea.Root className={cn(styles.body, compact && styles.compact)}>
+          <ScrollArea.Viewport
+            className={styles.viewport}
+            ref={bodyRef}
+            onScroll={onScroll}
+            aria-live="polite"
+          >
+            {entries.length === 0 && !typing ? (
+              <div className={styles.hint}>
+                {showChips
+                  ? "# pick an intent above — watch the agent run the ctx workflow\n# search → docs → read, with real output"
+                  : "# watch an agent run the ctx workflow"}
               </div>
-            ) : e.kind === "cta" ? (
-              <div key={e.id} className={styles.ctaLine}>
-                <span>{e.text}</span>
-                <CopyButton value={e.copy} className={styles.ctaCopy} />
-              </div>
-            ) : (
-              <div key={e.id} className={styles.entry}>
-                {e.note ? (
-                  <div className={styles.note}>
-                    <span className={styles.noteMark}>▸</span> {e.note}
-                  </div>
-                ) : null}
-                <div className={styles.cmdLine}>
-                  <span className={styles.prompt}>$</span> {e.cmd}
-                </div>
-                {e.running ? (
-                  <div className={styles.running}>
-                    <span className={styles.spinner} aria-hidden="true" />
-                    <span className={styles.shimmer}>fetching context…</span>
-                  </div>
-                ) : e.output ? (
-                  <div className={styles.out}>
-                    <TerminalLines
-                      text={e.output}
-                      animate
-                      reduce={reduce}
-                      flash={e.flash ? e.highlight : undefined}
-                    />
-                  </div>
-                ) : null}
-              </div>
-            ),
-          )}
-
-          <AnimatePresence>
-            {typing ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className={styles.entry}
-              >
-                {typing.note ? (
-                  <div className={styles.note}>
-                    <span className={styles.noteMark}>▸</span> {typing.note}
-                  </div>
-                ) : null}
-                <div className={styles.cmdLine}>
-                  <span className={styles.prompt}>$</span> {typing.cmd}
-                  <span className={styles.caret} aria-hidden="true" />
-                </div>
-              </motion.div>
             ) : null}
-          </AnimatePresence>
 
-          {showInput && !typing && !busy ? (
-            <form
-              className={styles.inputLine}
-              onSubmit={(ev) => {
-                ev.preventDefault()
-                submit()
-              }}
-            >
-              <span className={styles.prompt}>$</span>
-              <input
-                className={styles.input}
-                value={input}
-                onChange={(ev) => setInput(ev.target.value)}
-                onKeyDown={onInputKey}
-                placeholder="…or type a command: ctx read <url>  ·  ↑ history  ·  clear"
-                autoComplete="off"
-                spellCheck={false}
-                aria-label="ctx command"
-              />
-            </form>
-          ) : null}
-        </div>
+            {entries.map((e) =>
+              e.kind === "comment" ? (
+                <div key={e.id} className={styles.comment}>
+                  {e.text}
+                </div>
+              ) : e.kind === "cta" ? (
+                <div key={e.id} className={styles.ctaLine}>
+                  <span>{e.text}</span>
+                  <CopyButton value={e.copy} className={styles.ctaCopy} />
+                </div>
+              ) : (
+                <div key={e.id} className={styles.entry}>
+                  {e.note ? (
+                    <div className={styles.note}>
+                      <span className={styles.noteMark}>▸</span> {e.note}
+                    </div>
+                  ) : null}
+                  <div className={styles.cmdLine}>
+                    <span className={styles.prompt}>$</span> {e.cmd}
+                  </div>
+                  {e.running ? (
+                    <div className={styles.running}>
+                      <span className={styles.spinner} aria-hidden="true" />
+                      <span className={styles.shimmer}>fetching context…</span>
+                    </div>
+                  ) : e.output ? (
+                    <div className={styles.out}>
+                      <TerminalLines
+                        text={e.output}
+                        animate
+                        reduce={reduce}
+                        flash={e.flash ? e.highlight : undefined}
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              ),
+            )}
+
+            <AnimatePresence>
+              {typing ? (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className={styles.entry}
+                >
+                  {typing.note ? (
+                    <div className={styles.note}>
+                      <span className={styles.noteMark}>▸</span> {typing.note}
+                    </div>
+                  ) : null}
+                  <div className={styles.cmdLine}>
+                    <span className={styles.prompt}>$</span> {typing.cmd}
+                    <span className={styles.caret} aria-hidden="true" />
+                  </div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+
+            {showInput && !typing && !busy ? (
+              <form
+                className={styles.inputLine}
+                onSubmit={(ev) => {
+                  ev.preventDefault()
+                  submit()
+                }}
+              >
+                <span className={styles.prompt}>$</span>
+                <input
+                  className={styles.input}
+                  value={input}
+                  onChange={(ev) => setInput(ev.target.value)}
+                  onKeyDown={onInputKey}
+                  placeholder="…or type a command: ctx read <url>  ·  ↑ history  ·  clear"
+                  autoComplete="off"
+                  spellCheck={false}
+                  aria-label="ctx command"
+                />
+              </form>
+            ) : null}
+          </ScrollArea.Viewport>
+          <ScrollArea.Scrollbar className={styles.scrollbar}>
+            <ScrollArea.Thumb className={styles.thumb} />
+          </ScrollArea.Scrollbar>
+        </ScrollArea.Root>
       </div>
 
       {cta ? (
